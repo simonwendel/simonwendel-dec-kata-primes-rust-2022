@@ -19,8 +19,8 @@ fn main() {
     };
 
     let primes = primes::get_up_until(max_candidate);
-    let next_to_last_prime = primes[primes.len() - 2];
-    let last_prime = primes[primes.len() - 1];
+    let next_to_last_prime = primes[primes.len() - 2] as u128;
+    let last_prime = primes[primes.len() - 1] as u128;
 
     println!("Found {} primes.", primes.len());
     println!(
