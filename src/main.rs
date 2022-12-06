@@ -4,7 +4,7 @@ fn main() {
     let mut args: Vec<String> = std::env::args().collect();
     args.push(String::from(""));
 
-    let mut max_candidate = 17179869183_usize;
+    let mut max_candidate = 17179869183_usize; // this default uses up to ~21GB of RAM to run the sieve
     match args[1].parse::<usize>() {
         Ok(input_candidate) => {
             max_candidate = input_candidate;
