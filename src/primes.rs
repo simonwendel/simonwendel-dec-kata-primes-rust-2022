@@ -1,27 +1,34 @@
-fn sieve_of_eratosthenes(n: usize) -> Vec<usize> {
-    let mut all_integers = (0..=n).into_iter().map(|_| true).collect::<Vec<_>>();
-    all_integers[0] = false;
-    all_integers[1] = false;
+fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
+    let mut potential_primes = vec![true; max_candidate + 1];
+    potential_primes[0] = false;
+    potential_primes[1] = false;
 
-    let max_factor = ((n as f64).sqrt() + 1.0) as usize;
+    let max_factor = ((max_candidate as f64).sqrt() + 1.0) as usize;
 
-    for number in 2..=max_factor {
-        if all_integers[number] {
-            let mut j = usize::pow(number, 2);
-            while j <= n {
-                all_integers[j] = false;
-                j += number;
+    for candidate in 2..=max_factor {
+        if potential_primes[candidate] {
+            let mut index_of_multiple = usize::pow(candidate, 2);
+            while index_of_multiple <= max_candidate {
+                potential_primes[index_of_multiple] = false;
+                index_of_multiple += candidate;
             }
         }
     }
-    
-    let primes = all_integers.into_iter().enumerate().filter_map(|(i, val)| if val { Some(i) } else { None} );
+
+    let primes = potential_primes
+        .into_iter()
+        .enumerate()
+        .filter_map(|element| match element {
+            (i, true) => Some(i),
+            _ => None,
+        });
+
     primes.collect()
 }
 
 pub fn get_up_until(max_number: usize) -> Vec<usize> {
     match max_number {
         0 | 1 => Vec::new(),
-        _ => sieve_of_eratosthenes(max_number)
+        _ => sieve_of_eratosthenes(max_number),
     }
 }
