@@ -1,5 +1,7 @@
-fn status_out(checkpoint: usize, target: usize) {
-    println!("Status: {}/{}.", checkpoint, target);
+fn status_out(event: &str, checkpoint: usize, target: usize, chunks: usize) {
+    if checkpoint % chunks == 0 || checkpoint == target {
+        println!("Status ({}): {}/{}.", event, checkpoint, target);
+    }
 }
 
 fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
@@ -9,6 +11,7 @@ fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
 
     let max_factor = ((max_candidate as f64).sqrt() + 1.0) as usize;
     for candidate in 2..=max_factor {
+        status_out("enumeration", candidate, max_factor, 1000);
         if potential_primes[candidate] {
             let mut index_of_multiple = usize::pow(candidate, 2);
             while index_of_multiple <= max_candidate {
@@ -16,21 +19,22 @@ fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
                 index_of_multiple += candidate;
             }
         }
-
-        if candidate % 1000 == 0 || candidate == max_factor {
-            status_out(candidate, max_factor);
-        }
     }
 
-    let primes = potential_primes
-        .into_iter()
-        .enumerate()
-        .filter_map(|element| match element {
-            (i, true) => Some(i),
-            _ => None,
-        });
+    let mut primes: Vec<usize> = Vec::new();
+    let mut index = max_candidate;
+    while index >= 2 {
+        status_out("reduction", index, 2, 100_000);
+        if potential_primes[index] {
+            primes.push(index);
+        }
 
-    primes.collect()
+        potential_primes.pop();
+        index -= 1;
+    }
+
+    primes.reverse();
+    primes
 }
 
 pub fn less_than(number: usize) -> Vec<usize> {
