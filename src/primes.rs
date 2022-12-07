@@ -1,10 +1,13 @@
+fn status_out(checkpoint: usize, target: usize) {
+    println!("Status: {}/{}.", checkpoint, target);
+}
+
 fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
     let mut potential_primes = vec![true; max_candidate + 1];
     potential_primes[0] = false;
     potential_primes[1] = false;
 
     let max_factor = ((max_candidate as f64).sqrt() + 1.0) as usize;
-
     for candidate in 2..=max_factor {
         if potential_primes[candidate] {
             let mut index_of_multiple = usize::pow(candidate, 2);
@@ -12,6 +15,10 @@ fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
                 potential_primes[index_of_multiple] = false;
                 index_of_multiple += candidate;
             }
+        }
+
+        if candidate % 1000 == 0 || candidate == max_factor {
+            status_out(candidate, max_factor);
         }
     }
 
