@@ -10,7 +10,7 @@ fn main() {
         max_candidate
     );
 
-    let primes = primes::get_up_until(max_candidate);
+    let primes = primes::less_than(max_candidate);
     let next_to_last_prime = primes[primes.len() - 2] as u128;
     let last_prime = primes[primes.len() - 1] as u128;
 

@@ -26,7 +26,7 @@ fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
     primes.collect()
 }
 
-pub fn get_up_until(max_number: usize) -> Vec<usize> {
+pub fn less_than(max_number: usize) -> Vec<usize> {
     match max_number {
         0 | 1 => Vec::new(),
         _ => sieve_of_eratosthenes(max_number),
