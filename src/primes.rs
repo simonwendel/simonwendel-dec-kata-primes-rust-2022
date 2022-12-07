@@ -14,20 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub fn less_than(number: usize) -> Vec<usize> {
-    match number {
+pub fn less_than(n: usize) -> Vec<usize> {
+    match n {
         0 | 1 => Vec::new(),
-        _ => sieve_of_eratosthenes(number, None),
+        _ => sieve_of_eratosthenes(n, None),
     }
 }
 
 pub fn firstn(n: usize) -> Vec<usize> {
-    let max_candidate = match n {
+    let upper_candidate = match n {
         0..=5 => 11,
         _ => dusart_upper_bound(n),
     };
 
-    sieve_of_eratosthenes(max_candidate, Some(n))
+    sieve_of_eratosthenes(upper_candidate, Some(n))
 }
 
 fn dusart_upper_bound(n: usize) -> usize {
@@ -35,30 +35,30 @@ fn dusart_upper_bound(n: usize) -> usize {
     (f * (f.ln() + f.ln().ln())) as usize
 }
 
-fn sieve_of_eratosthenes(max_candidate: usize, pick_n: Option<usize>) -> Vec<usize> {
-    let sieve = construct_sieve(max_candidate);
+fn sieve_of_eratosthenes(upper_candidate: usize, pick_n: Option<usize>) -> Vec<usize> {
+    let sieve = construct_sieve(upper_candidate);
     let primes = reduce_sieve(sieve);
     select_primes(primes, pick_n)
 }
 
-fn construct_sieve(max_candidate: usize) -> Vec<bool> {
-    let mut potential_primes = vec![true; max_candidate + 1];
-    potential_primes[0] = false;
-    potential_primes[1] = false;
+fn construct_sieve(upper_candidate: usize) -> Vec<bool> {
+    let mut sieve = vec![true; upper_candidate + 1];
+    sieve[0] = false;
+    sieve[1] = false;
 
-    let max_factor = ((max_candidate as f64).sqrt() + 1.0) as usize;
-    for candidate in 2..=max_factor {
-        status_out("enumeration", candidate, max_factor, 1000);
-        if potential_primes[candidate] {
-            let mut index_of_multiple = usize::pow(candidate, 2);
-            while index_of_multiple <= max_candidate {
-                potential_primes[index_of_multiple] = false;
-                index_of_multiple += candidate;
+    let upper_factor = ((upper_candidate as f64).sqrt() + 1.0) as usize;
+    for candidate in 2..=upper_factor {
+        status_out("enumeration", candidate, upper_factor, 1000);
+        if sieve[candidate] {
+            let mut integer_to_cross_out = usize::pow(candidate, 2);
+            while integer_to_cross_out <= upper_candidate {
+                sieve[integer_to_cross_out] = false;
+                integer_to_cross_out += candidate;
             }
         }
     }
 
-    potential_primes
+    sieve
 }
 
 fn reduce_sieve(mut sieve: Vec<bool>) -> Vec<usize> {
