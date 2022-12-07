@@ -40,3 +40,17 @@ fn mod_primes_fn_less_than_given_30_returns_10_first_primes() {
     let actual = primes::less_than(30);
     assert_eq!(expected, actual);
 }
+
+#[test]
+fn mod_primes_fn_firstn_given_10_returns_10_first_primes() {
+    let expected = vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29];
+    let actual = primes::firstn(10);
+    assert_eq!(expected, actual);
+}
+
+#[test]
+fn mod_primes_fn_firstn_given_25_returns_25_first_primes() {
+    let expected = vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+    let actual = primes::firstn(25);
+    assert_eq!(expected, actual);
+}

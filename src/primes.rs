@@ -20,7 +20,7 @@ fn status_out(event: &str, checkpoint: usize, target: usize, chunks: usize) {
     }
 }
 
-fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
+fn sieve_of_eratosthenes(max_candidate: usize, pick_n: Option<usize>) -> Vec<usize> {
     let mut potential_primes = vec![true; max_candidate + 1];
     potential_primes[0] = false;
     potential_primes[1] = false;
@@ -50,12 +50,29 @@ fn sieve_of_eratosthenes(max_candidate: usize) -> Vec<usize> {
     }
 
     primes.reverse();
-    primes
+    match pick_n {
+        Some(n) => primes.into_iter().take(n).collect(),
+        _ => primes
+    }
+}
+
+fn dusart_upper_bound(n: usize) -> usize {
+    let f = n as f64;
+    (f * (f.ln() + f.ln().ln())) as usize
 }
 
 pub fn less_than(number: usize) -> Vec<usize> {
     match number {
         0 | 1 => Vec::new(),
-        _ => sieve_of_eratosthenes(number),
+        _ => sieve_of_eratosthenes(number, None),
     }
+}
+
+pub fn firstn(n: usize) -> Vec<usize> {
+    let max_candidate = match n {
+        0..=5 => 11,
+        _ => dusart_upper_bound(n)
+    };
+
+    sieve_of_eratosthenes(max_candidate, Some(n))
 }
